@@ -17,11 +17,9 @@ export default {
       topic: process.env.MQTT_SOURCE_TOPIC || 'topic',
     },
     sink: {
-      url: 'mqtt://localhost:1883',
+      url: process.env.MQTT_SINK_URL || 'mqtt://localhost:1883',
       options: {
-        username: 'username',
-        password: 'password',
-        clientId: 'clientId',
+        username: process.env.MQTT_SINK_USERNAME || 'username',
       },
     },
   },

@@ -1,11 +1,12 @@
 import pino from 'pino'
-import { pipeline, Writable } from 'stream'
+import { pipeline } from 'stream'
 
 import config from './config'
 import Source from './source'
 import Validator from './validator'
 import Decoder from './decoder'
 import Thingsboard from './thingsboard'
+import Sink from './sink'
 
 const logger = pino({
   level:
@@ -23,13 +24,7 @@ pipeline(
   new Validator(logger),
   new Decoder(logger),
   new Thingsboard(logger),
-  new Writable({
-    objectMode: true,
-    write: (msg, _, callback) => {
-      console.log(msg)
-      callback()
-    },
-  }),
+  new Sink(config.mqtt.sink, logger),
   error => {
     if (error) {
       logger.error(`Error in pipeline: ${error.message}`)
