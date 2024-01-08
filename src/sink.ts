@@ -20,7 +20,7 @@ export default class Sink extends Writable {
 
     this.logger = logger.child({ class: 'Sink' })
     this.client = connect(config.url, config.options)
-    this.logger.info(`Connecting external MQTT client to ${config.url}`)
+    this.logger.info(`Connecting to ${config.url}`)
 
     this.client.on('connect', () => {
       this.logger.info('Connected!')

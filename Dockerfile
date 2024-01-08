@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:slim
+FROM node:20.10-slim
 
 ENV NODE_ENV production
 USER node
