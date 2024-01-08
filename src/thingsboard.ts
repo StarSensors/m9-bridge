@@ -70,7 +70,7 @@ export default class Thingsboard extends Transform {
     if (!this.connected[msg.devEui]) {
       this.push(connectMsg)
       this.connected[msg.devEui] = true
-      this.logger.debug(
+      this.logger.info(
         `${Object.keys(this.connected).length} devices connected`,
       )
     } else {

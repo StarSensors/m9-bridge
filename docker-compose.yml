@@ -13,3 +13,13 @@ services:
     volumes:
       - ~/.mytb-data:/data
       - ~/.mytb-logs:/var/log/thingsboard
+
+  m9-bridge:
+    restart: always
+    image: m9-bridge
+    build:
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
+    environment:
+      - MQTT_SINK_URL=mqtt://mytb:1883
