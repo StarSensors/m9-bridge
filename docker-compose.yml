@@ -1,7 +1,7 @@
-version: '3'
+version: '3.0'
 services:
-  thingsboard:
-    restart: unless-stopped
+  mytb:
+    restart: always
     image: 'thingsboard/tb-postgres'
     ports:
       - '8080:9090'
@@ -11,5 +11,5 @@ services:
     environment:
       TB_QUEUE_TYPE: in-memory
     volumes:
-      - tb-data:/data
-      - tb-logs:/var/log/thingsboard
+      - ~/.mytb-data:/data
+      - ~/.mytb-logs:/var/log/thingsboard

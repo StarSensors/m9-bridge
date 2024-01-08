@@ -26,7 +26,13 @@ export type DecodedMsg = ValidatedMsg & {
   decoded: DecodeResult
 }
 
-export type ThingsboardTelemetryMsg = {
+export type ThingsboardMsg = {
+  type: 'connected' | 'attributes' | 'telemetry'
+  device: string
+  payload: any
+}
+
+export type ThingsboardTelemetryMsg = ThingsboardMsg & {
   type: 'telemetry'
   payload: {
     [key: string]: {
@@ -34,15 +40,23 @@ export type ThingsboardTelemetryMsg = {
       values: {
         [key: string]: number | string
       }
-    }
+    }[]
   }
 }
 
-export type ThingsboardAttributesMsg = {
+export type ThingsboardAttributesMsg = ThingsboardMsg & {
   type: 'attributes'
   payload: {
     [key: string]: {
       [key: string]: number | string
     }
+  }
+}
+
+export type ThingsboardConnectMsg = ThingsboardMsg & {
+  type: 'connected'
+  payload: {
+    device: string
+    type: string
   }
 }

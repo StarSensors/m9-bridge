@@ -1,7 +1,7 @@
 import { connect, IClientOptions, MqttClient } from 'mqtt'
 import { Logger } from 'pino'
 import { Writable } from 'stream'
-import { ThingsboardAttributesMsg, ThingsboardTelemetryMsg } from './types'
+import { ThingsboardMsg } from './types'
 
 export type SinkConfig = {
   url: string
@@ -25,13 +25,14 @@ export default class Sink extends Writable {
   }
 
   _write(
-    msg: ThingsboardTelemetryMsg | ThingsboardAttributesMsg,
+    msg: ThingsboardMsg,
     encoding: BufferEncoding,
     callback: (error?: Error | null | undefined) => void,
   ): void {
     const topic = `v1/gateway/${msg.type}`
-    this.logger.debug(`Publishing message to ${topic}`)
-    this.client.publish(topic, JSON.stringify(msg.payload))
+    const payload = JSON.stringify(msg.payload)
+    this.logger.debug(`Publishing message to ${topic}: ${payload}`)
+    this.client.publish(topic, payload)
     callback()
   }
 

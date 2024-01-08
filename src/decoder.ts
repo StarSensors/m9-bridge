@@ -50,16 +50,22 @@ export default class Decoder extends Transform {
     this.logger.debug(`Decoding message ${msg.payload}`)
     const { payload } = msg
 
-    try {
-      const decoded = decode(payload)
+    let decoded: DecodeResult
 
-      this.push({
-        ...msg,
-        decoded,
-      } as DecodedMsg)
+    try {
+      decoded = decode(payload)
     } catch (error) {
-      this.emit('error', error)
+      return callback(new Error(`Error decoding message: ${error}`))
     }
+
+    const decodedMsg: DecodedMsg = {
+      ...msg,
+      decoded,
+    }
+
+    this.push(decodedMsg)
+
+    this.logger.debug(`Decoded message ${msg.payload}`)
 
     callback()
   }

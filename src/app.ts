@@ -23,7 +23,7 @@ pipeline(
   new Source(config.mqtt.source, logger),
   new Validator(logger),
   new Decoder(logger),
-  new Thingsboard(logger),
+  new Thingsboard(config.thingsboard.deviceType, logger),
   new Sink(config.mqtt.sink, logger),
   error => {
     if (error) {

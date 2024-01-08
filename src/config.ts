@@ -23,4 +23,7 @@ export default {
       },
     },
   },
+  thingsboard: {
+    deviceType: process.env.THINGSBOARD_DEVICE_TYPE || 'deviceType',
+  },
 }
