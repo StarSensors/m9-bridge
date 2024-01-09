@@ -26,20 +26,23 @@ export default class Thingsboard extends Transform {
   ): void {
     this.logger.debug(`Transforming message ${msg.payload}`)
 
+    const mosid = `${msg.decoded.mosid}`
+    const deviceName = `MN${mosid.padStart(4, '0')}-WB`
+
     const connectMsg: ThingsboardConnectMsg = {
       type: 'connected',
-      device: msg.devEui,
+      device: deviceName,
       payload: {
-        device: msg.devEui,
+        device: deviceName,
         type: this.deviceType,
       },
     }
 
     const telemetryMsg: ThingsboardTelemetryMsg = {
       type: 'telemetry',
-      device: msg.devEui,
+      device: deviceName,
       payload: {
-        [msg.devEui]: [
+        [deviceName]: [
           {
             ts: +msg.timestamp,
             values: {
@@ -55,16 +58,23 @@ export default class Thingsboard extends Transform {
 
     const attributesMsg: ThingsboardAttributesMsg = {
       type: 'attributes',
-      device: msg.devEui,
+      device: deviceName,
       payload: {
-        [msg.devEui]: {
-          latitude: msg.decoded.latitude,
-          longitude: msg.decoded.longitude,
+        [deviceName]: {
+          dev_eui: msg.devEui,
           mosid: msg.decoded.mosid,
           type: msg.decoded.type,
           sensor_type: msg.tags.SensorType[0],
         },
       },
+    }
+
+    const latitude = msg.decoded.latitude
+    const longitude = msg.decoded.longitude
+
+    if (latitude && longitude) {
+      attributesMsg.payload[deviceName].latitude = latitude
+      attributesMsg.payload[deviceName].longitude = longitude
     }
 
     if (!this.connected[msg.devEui]) {
