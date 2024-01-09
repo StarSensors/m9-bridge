@@ -47,7 +47,7 @@ export default class Thingsboard extends Transform {
             ts: +msg.timestamp,
             values: {
               battery_voltage: msg.decoded.battery,
-              level: msg.decoded.level,
+              level: msg.decoded.level / 10000,
               rssi: msg.rssi,
               snr: msg.snr,
             },
